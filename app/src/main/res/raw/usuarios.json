@@ -1,0 +1,288 @@
+{
+  "usuarios": {
+    "ElquinMilthonAguilar": {
+      "nombre": "Elquin Milthon Aguilar Quiñones",
+      "correo": "eaguilar@uns.edu.pe",
+      "telefono": "+51 912345678",
+      "direccion": "Av. Universitaria 123, Chimbote, Perú",
+      "fechaNacimiento": "1985-09-10",
+      "genero": "Masculino",
+      "estadoCivil": "Soltero",
+      "especialidades": [
+        "Administración de Sistemas",
+        "Gestión Académica",
+        "Desarrollo de Software"
+      ],
+      "añosExperiencia": 10,
+      "gradosAcademicos": {
+        "licenciatura": "Ingeniería de Sistemas",
+        "maestria": "Gestión de Tecnología de la Información",
+        "doctorado": "Gestión de la Innovación Tecnológica"
+      },
+      "idiomas": [
+        "Español",
+        "Inglés"
+      ],
+      "rol": "admin"
+    },
+    "JohanLopezHeredia": {
+      "nombre": "Johan Lopez Heredia",
+      "correo": "jlopez@uns.edu.pe",
+      "telefono": "+51 987654321",
+      "direccion": "Av. Universitaria 123, Chimbote, Perú",
+      "fechaNacimiento": "1980-05-15",
+      "genero": "Masculino",
+      "estadoCivil": "Casado",
+      "especialidades": [
+        "Redes de Computadoras",
+        "Robótica",
+        "Aplicaciones Móviles"
+      ],
+      "añosExperiencia": 15,
+      "gradosAcademicos": {
+        "licenciatura": "Ingeniería de Sistemas",
+        "maestria": "Redes y Comunicaciones",
+        "doctorado": "Inteligencia Artificial"
+      },
+      "idiomas": [
+        "Español",
+        "Inglés"
+      ],
+      "rol": "docente",
+      "horarios": {
+        "lunes": [
+          {
+            "horaInicio": "08:00",
+            "horaFin": "10:00",
+            "aula": "1"
+          },
+          {
+            "horaInicio": "10:00",
+            "horaFin": "12:00",
+            "aula": "Laboratorio de Redes"
+          }
+        ],
+        "martes": [
+          {
+            "horaInicio": "09:00",
+            "horaFin": "11:00",
+            "aula": "Laboratorio de Robótica"
+          }
+        ],
+        
+        "jueves": [
+          {
+            "horaInicio": "14:00",
+            "horaFin": "16:00",
+            "aula": "Laboratorio de Aplicaciones Móviles"
+          }
+        ],
+        "viernes": [
+          {
+            "horaInicio": "08:00",
+            "horaFin": "10:00",
+            "aula": "Lab4"
+          },
+          {
+            "horaInicio": "10:00",
+            "horaFin": "12:00",
+            "aula": "Lab5"
+          }
+        ]
+      }
+    },
+    "MariaPerezSantos": {
+      "nombre": "Maria Perez Santos",
+      "correo": "mperez@uns.edu.pe",
+      "telefono": "+51 123456789",
+      "direccion": "Av. Central 456, Nuevo Chimbote, Perú",
+      "fechaNacimiento": "1985-07-20",
+      "genero": "Femenino",
+      "estadoCivil": "Soltera",
+      "especialidades": [
+        "Inteligencia Artificial",
+        "Machine Learning",
+        "Seguridad Informática"
+      ],
+      "añosExperiencia": 10,
+      "gradosAcademicos": {
+        "licenciatura": "Ciencias de la Computación",
+        "maestria": "Inteligencia Artificial",
+        "doctorado": "Ciencias de Datos"
+      },
+      "idiomas": [
+        "Español",
+        "Inglés",
+        "Francés"
+      ],
+      "rol": "docente",
+      "horarios": {
+        "lunes": [
+          {
+            "horaInicio": "14:00",
+            "horaFin": "16:00",
+            "aula": "Lab6"
+          }
+        ],
+        "martes": [
+          {
+            "horaInicio": "08:00",
+            "horaFin": "10:00",
+            "aula": "3"
+          },
+          {
+            "horaInicio": "10:00",
+            "horaFin": "12:00",
+            "aula": "Laboratorio de Robótica"
+          }
+        ],
+        "miercoles": [
+          {
+            "horaInicio": "08:00",
+            "horaFin": "10:00",
+            "aula": "Laboratorio de Aplicaciones Móviles"
+          }
+        ],
+        "jueves": [
+          {
+            "horaInicio": "10:00",
+            "horaFin": "12:00",
+            "aula": "Lab4"
+          }
+        ],
+        "viernes": [
+          {
+            "horaInicio": "14:00",
+            "horaFin": "16:00",
+            "aula": "Lab5"
+          }
+        ]
+      }
+    },
+"AnaMariaGomez": {
+      "nombre": "Ana Maria Gomez",
+      "correo": "amgomez@uns.edu.pe",
+      "telefono": "+51 987123654",
+      "direccion": "Jr. Pescadores 789, Chimbote, Perú",
+      "fechaNacimiento": "1982-03-30",
+      "genero": "Femenino",
+      "estadoCivil": "Casada",
+      "especialidades": [
+        "Algoritmos",
+        "Computación Gráfica",
+        "Programación Avanzada"
+      ],
+      "añosExperiencia": 12,
+      "gradosAcademicos": {
+        "licenciatura": "Ingeniería Informática",
+        "maestria": "Inteligencia Computacional",
+        "doctorado": "Teoría de la Computación"
+      },
+      "idiomas": [
+        "Español",
+        "Inglés"
+      ],
+      "horarios": {
+        "lunes": [
+          {
+            "horaInicio": "08:00",
+            "horaFin": "10:00",
+            "aula": "Laboratorio de Aplicaciones Móviles"
+          }
+        ],
+        "martes": [
+          {
+            "horaInicio": "14:00",
+            "horaFin": "16:00",
+            "aula": "Laboratorio de Redes"
+          }
+        ],
+        "miercoles": [
+          {
+            "horaInicio": "10:00",
+            "horaFin": "12:00",
+            "aula": "Lab4"
+          }
+        ],
+        "jueves": [
+          {
+            "horaInicio": "08:00",
+            "horaFin": "10:00",
+            "aula": "Lab5"
+          }
+        ],
+        "viernes": [
+          {
+            "horaInicio": "12:00",
+            "horaFin": "14:00",
+            "aula": "3"
+          }
+        ]
+      }
+    },
+"CarlosFernandezLopez": {
+      "nombre": "Carlos Fernandez Lopez",
+      "correo": "cfernandez@uns.edu.pe",
+      "telefono": "+51 912345678",
+      "direccion": "Av. Comandante FAP 123, Chimbote, Perú",
+      "fechaNacimiento": "1978-11-05",
+      "genero": "Masculino",
+      "estadoCivil": "Soltero",
+      "especialidades": [
+        "Sistemas Operativos",
+        "Bases de Datos",
+        "Redes de Computadoras"
+      ],
+      "añosExperiencia": 18,
+      "gradosAcademicos": {
+        "licenciatura": "Ingeniería de Redes y Telecomunicaciones",
+        "maestria": "Sistemas Distribuidos",
+        "doctorado": "Redes de Alta Velocidad"
+      },
+
+      "idiomas": [
+        "Español",
+        "Inglés"
+      ],
+	"rol": "docente",
+      "horarios": {
+        "lunes": [
+          {
+            "horaInicio": "10:00",
+            "horaFin": "12:00",
+            "aula": "Lab5"
+          }
+        ],
+        "martes": [
+          {
+            "horaInicio": "08:00",
+            "horaFin": "10:00",
+            "aula": "3"
+          }
+        ],
+        "miercoles": [
+          {
+            "horaInicio": "14:00",
+            "horaFin": "16:00",
+            "aula": "Laboratorio de Robótica"
+          }
+        ],
+        "jueves": [
+          {
+            "horaInicio": "12:00",
+            "horaFin": "14:00",
+            "aula": "Laboratorio de Redes"
+          }
+        ],
+        "viernes": [
+          {
+            "horaInicio": "08:00",
+            "horaFin": "10:00",
+            "aula": "Lab4"
+          }
+        ]
+      }
+    }
+
+  }
+}

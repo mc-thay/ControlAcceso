@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "509870175254",
+    "project_id": "seguridad-e2311",
+    "storage_bucket": "seguridad-e2311.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:509870175254:android:0684473f46739931ccf137",
+        "android_client_info": {
+          "package_name": "com.aguilar.controlacceso"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCIP7dYSh2y4Bpf_2cdE0rla87Ik49cYSc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
