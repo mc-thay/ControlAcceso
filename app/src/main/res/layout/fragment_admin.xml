@@ -35,6 +35,15 @@
             android:text="Agregar Docente"
             android:backgroundTint="@color/black"
             android:textColor="@color/white" />
+        <Button
+            android:id="@+id/btnVerInfoDocentes"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:text="Ver Informacion de Docentes"
+            android:backgroundTint="@color/black"
+            android:textColor="@color/white" />
+
 
         <!-- Mostrar resultados -->
         <TextView
@@ -55,6 +64,13 @@
             android:background="@android:color/darker_gray"
             android:textColor="@android:color/white"
             android:visibility="gone" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvSolicitudes"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="16dp"
+            android:scrollbars="vertical" />
 
 
 

@@ -3,9 +3,12 @@ package com.aguilar.controlacceso
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.widget.Button
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.aguilar.controlacceso.databinding.FragmentAdminBinding
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
@@ -24,11 +27,85 @@ class AdminFragment : Fragment(R.layout.fragment_admin) {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
     }
+    private fun aceptarSolicitud(solicitud: Solicitud) {
+        firestore.collection("solicitudes").document(solicitud.id)
+            .update("estado", "APROBADA")
+            .addOnSuccessListener {
+                Toast.makeText(requireContext(), "Solicitud aceptada", Toast.LENGTH_SHORT).show()
+                // Remover la solicitud de la lista y actualizar el adaptador
+                eliminarSolicitudDeLista(solicitud)
+            }
+            .addOnFailureListener {
+                Toast.makeText(requireContext(), "Error al aceptar solicitud", Toast.LENGTH_SHORT).show()
+            }
+    }
+    private fun eliminarSolicitudDeLista(solicitud: Solicitud) {
+        val adapter = (binding.rvSolicitudes.adapter as SolicitudesAdapter)
+        adapter.solicitudes = adapter.solicitudes.filter { it.id != solicitud.id }
+        adapter.notifyDataSetChanged()
+    }
+
+    private fun rechazarSolicitud(solicitud: Solicitud) {
+        firestore.collection("solicitudes").document(solicitud.id)
+            .update("estado", "RECHAZADA")
+            .addOnSuccessListener {
+                Toast.makeText(requireContext(), "Solicitud rechazada", Toast.LENGTH_SHORT).show()
+                // Remover la solicitud de la lista y actualizar el adaptador
+                eliminarSolicitudDeLista(solicitud)
+            }
+            .addOnFailureListener {
+                Toast.makeText(requireContext(), "Error al rechazar solicitud", Toast.LENGTH_SHORT).show()
+            }
+    }
+
+    private fun cargarSolicitudes(adapter: SolicitudesAdapter) {
+        firestore.collection("solicitudes")
+            .whereEqualTo("estado", "PENDIENTE") // Filtrar solo solicitudes pendientes
+            .get()
+            .addOnSuccessListener { snapshot ->
+                val solicitudes = snapshot.documents.mapNotNull { doc ->
+                    doc.toObject(Solicitud::class.java)?.copy(id = doc.id)
+                }
+
+                // Actualizar el adaptador con los datos filtrados
+                adapter.apply {
+                    this.solicitudes = solicitudes
+                    notifyDataSetChanged()
+                }
+            }
+            .addOnFailureListener { exception ->
+                Log.e("Firestore", "Error al cargar solicitudes", exception)
+                Toast.makeText(requireContext(), "Error al cargar solicitudes", Toast.LENGTH_SHORT).show()
+            }
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         _binding = FragmentAdminBinding.bind(view)
 
+        // Encuentra el botón por su ID
+        val btnVerInfoDocente = view.findViewById<Button>(R.id.btnVerInfoDocentes)
+
+        // Configura el listener para el botón
+        btnVerInfoDocente.setOnClickListener {
+            // Navega al fragmento AdminInfoDocentesFragment
+            findNavController().navigate(R.id.action_adminFragment_to_adminInfoDocentes)
+        }
+// Configurar RecyclerView
+        val solicitudesAdapter = SolicitudesAdapter(
+            solicitudes = listOf(), // Lista inicial vacía
+            onAceptarClick = { solicitud -> aceptarSolicitud(solicitud) },
+            onRechazarClick = { solicitud -> rechazarSolicitud(solicitud) }
+        )
+
+        binding.rvSolicitudes.apply {
+            adapter = solicitudesAdapter
+            layoutManager = LinearLayoutManager(requireContext())
+        }
+
+
+        // Cargar solicitudes desde Firestore
+        cargarSolicitudes(solicitudesAdapter)
         requireActivity().title = "Gestión Docentes"
 
         binding.btnAgregarDocente.setOnClickListener {
@@ -40,7 +117,7 @@ class AdminFragment : Fragment(R.layout.fragment_admin) {
         super.onDestroyView()
         _binding = null
     }
-
+// para cargar usuarios a firestore/////////////////////////////////////
     private fun buscarDocenteEnJSON() {
         try {
             val inputStream = resources.openRawResource(R.raw.usuarios)
