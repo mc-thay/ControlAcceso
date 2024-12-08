@@ -43,6 +43,15 @@
             android:text="Ver Informacion de Docentes"
             android:backgroundTint="@color/black"
             android:textColor="@color/white" />
+        <Button
+            android:id="@+id/btnDownloadRegister"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:text="Descargar Registro de Entradas"
+            android:backgroundTint="@color/black"
+            android:textColor="@color/white" />
+
 
 
         <!-- Mostrar resultados -->

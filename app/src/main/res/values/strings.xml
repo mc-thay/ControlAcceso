@@ -2,4 +2,9 @@
     <string name="app_name">ControlAcceso</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string-array name="user_types">
+
+        <item>docente</item>
+        <item>admin</item>
+    </string-array>
 </resources>

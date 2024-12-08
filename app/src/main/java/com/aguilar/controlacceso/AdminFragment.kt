@@ -1,10 +1,13 @@
 package com.aguilar.controlacceso
 
 import android.os.Bundle
+import android.os.Environment
 import android.util.Log
+
 import android.view.View
 import android.widget.Button
 import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
@@ -12,8 +15,15 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.aguilar.controlacceso.databinding.FragmentAdminBinding
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import com.itextpdf.text.Paragraph
+import com.itextpdf.text.DocumentException
+import com.itextpdf.text.pdf.PdfWriter
 import org.json.JSONObject
+import com.itextpdf.text.Document
 import java.io.BufferedReader
+import com.itextpdf.text.pdf.PdfPTable
+import java.io.File
+import java.io.FileOutputStream
 import java.io.InputStreamReader
 
 class AdminFragment : Fragment(R.layout.fragment_admin) {
@@ -79,10 +89,121 @@ class AdminFragment : Fragment(R.layout.fragment_admin) {
             }
     }
 
+    private fun mostrarDialogoDescarga() {
+        AlertDialog.Builder(requireContext()).apply {
+            setTitle("Descargar Registro")
+            setMessage("¿Desea descargar el registro de solicitudes en PDF?")
+            setPositiveButton("Sí") { _, _ ->
+                generarPDF()
+            }
+            setNegativeButton("No") { dialog, _ ->
+                dialog.dismiss()
+            }
+            create()
+            show()
+        }
+    }
+
+    private fun generarPDF() {
+        firestore.collection("solicitudes")
+            .get()
+            .addOnSuccessListener { snapshot ->
+                val solicitudes = snapshot.documents.mapNotNull { doc ->
+                    doc.toObject(Solicitud::class.java)?.copy(id = doc.id)
+                }
+
+                if (solicitudes.isEmpty()) {
+                    Toast.makeText(requireContext(), "No hay solicitudes para descargar", Toast.LENGTH_SHORT).show()
+                    return@addOnSuccessListener
+                }
+
+                try {
+                    val pdfFile = crearPDF(solicitudes)
+                    Toast.makeText(requireContext(), "PDF generado: ${pdfFile.absolutePath}", Toast.LENGTH_LONG).show()
+                } catch (e: Exception) {
+                    Toast.makeText(requireContext(), "Error al crear el PDF: ${e.message}", Toast.LENGTH_SHORT).show()
+                    Log.e("PDF", "Error al crear el PDF", e)
+                }
+            }
+            .addOnFailureListener { e ->
+                Log.e("Firestore", "Error al obtener solicitudes", e)
+                Toast.makeText(requireContext(), "Error al obtener solicitudes", Toast.LENGTH_SHORT).show()
+            }
+    }
+
+    private fun crearPDF(solicitudes: List<Solicitud>): File {
+        val document = Document()
+
+        // Carpeta de Descargas
+        val downloadDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)
+
+        // Archivo PDF en la carpeta de Descargas
+        val pdfFile = File(downloadDir, "registro_solicitudes.pdf")
+
+        try {
+            PdfWriter.getInstance(document, FileOutputStream(pdfFile))
+            document.open()
+
+            // Título
+            document.add(Paragraph("Registro de Solicitudes\n\n"))
+
+            // Crear tabla con columnas
+            val tabla = PdfPTable(6) // Seis columnas: ID, Solicitante, Fecha, Estado, Laboratorio, Hora de Salida
+            tabla.addCell("ID")
+            tabla.addCell("Solicitante")
+            tabla.addCell("Fecha")
+            tabla.addCell("Estado")
+            tabla.addCell("Laboratorio")
+            tabla.addCell("Hora de Salida")
+
+            solicitudes.forEach { solicitud ->
+                tabla.addCell(solicitud.id)
+                tabla.addCell(solicitud.solicitante.nombre)
+                tabla.addCell(solicitud.fechaSolicitud)
+                tabla.addCell(solicitud.estado)
+                tabla.addCell(solicitud.laboratorio ?: "No disponible") // Nuevo campo
+                tabla.addCell(solicitud.horaSalida ?: "No disponible") // Nuevo campo
+            }
+
+            document.add(tabla)
+            document.add(Paragraph("\n\nGenerado el ${System.currentTimeMillis()}"))
+
+            document.close()
+
+            Log.d("PDF", "PDF guardado en: ${pdfFile.absolutePath}")
+            return pdfFile
+        } catch (e: DocumentException) {
+            Log.e("PDF", "Error al generar el documento", e)
+            throw e
+        } catch (e: Exception) {
+            Log.e("PDF", "Error al guardar el archivo", e)
+            throw e
+        }
+    }
+    private fun mostrarDialogoSalir() {
+        AlertDialog.Builder(requireContext())
+            .setTitle("Salir de la aplicación")
+            .setMessage("¿Estás seguro de que deseas salir?")
+            .setPositiveButton("Sí") { _, _ ->
+                requireActivity().finish() // Finalizar la actividad actual
+            }
+            .setNegativeButton("No") { dialog, _ ->
+                dialog.dismiss() // Cerrar el diálogo
+            }
+            .show()
+    }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         _binding = FragmentAdminBinding.bind(view)
-
+        binding.btnDownloadRegister.setOnClickListener {
+            mostrarDialogoDescarga()
+        }
+        // Configurar el comportamiento del botón de retroceso
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                mostrarDialogoSalir()
+            }
+        })
         // Encuentra el botón por su ID
         val btnVerInfoDocente = view.findViewById<Button>(R.id.btnVerInfoDocentes)
 

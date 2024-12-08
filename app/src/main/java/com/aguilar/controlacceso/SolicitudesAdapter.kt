@@ -32,7 +32,7 @@ class SolicitudesAdapter(
         val solicitud = solicitudes[position]
 
         holder.tvNombreDocente.text = solicitud.solicitante.nombre
-        holder.tvLaboratorio.text = "Laboratorio: ${solicitud.solicitante.horarios}" // Puedes ajustar según tus datos
+        holder.tvLaboratorio.text = "Laboratorio: ${solicitud.laboratorio}" // Puedes ajustar según tus datos
         holder.tvEstado.text = solicitud.estado
         holder.tvFechaSolicitud.text = "Fecha: ${solicitud.fechaSolicitud}"
         holder.tvSolicitante.text = "Solicitante: ${solicitud.solicitante.correo}"

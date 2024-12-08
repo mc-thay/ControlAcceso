@@ -56,4 +56,7 @@ dependencies {
     androidTestImplementation(libs.androidx.espresso.core)
 //firebase uwu
     implementation(platform("com.google.firebase:firebase-bom:33.6.0"))
+    implementation ("com.itextpdf:itext7-core:7.2.2")
+    implementation ("com.itextpdf:itextpdf:5.5.13.2")
+
 }

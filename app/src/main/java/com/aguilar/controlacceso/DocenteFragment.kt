@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -13,6 +14,7 @@ import com.aguilar.controlacceso.databinding.FragmentDocenteBinding
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
+import kotlin.random.Random
 
 class DocenteFragment : Fragment(R.layout.fragment_docente) {
 
@@ -24,9 +26,32 @@ class DocenteFragment : Fragment(R.layout.fragment_docente) {
 
     private lateinit var solicitudesAdapter: SolicitudesDocenteAdapter
 
+    private val laboratorios = listOf(
+        "Laboratorio 1", "Laboratorio 2", "Laboratorio 3",
+        "Robotica", "Redes", "Inteligencia Artificial",
+        "Teoria A1", "Teoria A2", "Teoria A3"
+    )
+    private fun mostrarDialogoSalir() {
+        AlertDialog.Builder(requireContext())
+            .setTitle("Salir de la aplicación")
+            .setMessage("¿Estás seguro de que deseas salir?")
+            .setPositiveButton("Sí") { _, _ ->
+                requireActivity().finish() // Finalizar la actividad actual
+            }
+            .setNegativeButton("No") { dialog, _ ->
+                dialog.dismiss() // Cerrar el diálogo
+            }
+            .show()
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+// Configurar el comportamiento del botón de retroceso
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                mostrarDialogoSalir()
+            }
+        })
         _binding = FragmentDocenteBinding.bind(view)
 
         // Configurar Adapter para la lista de solicitudes
@@ -55,19 +80,22 @@ class DocenteFragment : Fragment(R.layout.fragment_docente) {
         val usuarioActual = auth.currentUser
         if (usuarioActual != null) {
             Log.d("DEBUG", "DisplayName: ${usuarioActual.displayName}") // Observa el nombre aquí
-            val fechaActual = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(
-                Date()
-            )
+            val fechaActual = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(Date())
+
+            // Asignar un nombre de usuario válido si displayName está vacío
+            val nombreUsuario = usuarioActual.displayName ?: usuarioActual.email ?: "Usuario desconocido"
 
             // Crear la solicitud con los datos correctos
             val solicitud = Solicitud(
                 id = "", // Firebase asignará el ID automáticamente
                 solicitante = Usuario(
-                    nombre = usuarioActual.displayName ?: "Usuario desconocido",
+                    nombre = nombreUsuario,
                     correo = usuarioActual.email ?: ""
                 ),
                 fechaSolicitud = fechaActual,
-                estado = "PENDIENTE"
+                estado = "PENDIENTE",
+                laboratorio = obtenerLaboratorioAleatorio(),
+                horaSalida = null // Campo para actualizar más tarde
             )
 
             firestore.collection("solicitudes")
@@ -83,19 +111,23 @@ class DocenteFragment : Fragment(R.layout.fragment_docente) {
         }
     }
 
-
     // Función para mapear el objeto Solicitud a un Map compatible con Firestore
-    fun Solicitud.toMap(): Map<String, Any> {
+    fun Solicitud.toMap(): Map<String, Any?> {
         return mapOf(
             "solicitante" to mapOf(
                 "nombre" to solicitante.nombre,
                 "correo" to solicitante.correo
             ),
             "fechaSolicitud" to fechaSolicitud,
-            "estado" to estado
+            "estado" to estado,
+            "laboratorio" to laboratorio,
+            "horaSalida" to horaSalida
         )
     }
 
+    private fun obtenerLaboratorioAleatorio(): String {
+        return laboratorios[Random.nextInt(laboratorios.size)] // Seleccionar aleatoriamente un laboratorio
+    }
 
     private fun mostrarDialogoSalidaDelAula(solicitud: Solicitud) {
         AlertDialog.Builder(requireContext())
@@ -112,20 +144,31 @@ class DocenteFragment : Fragment(R.layout.fragment_docente) {
     }
 
     private fun verificarYActualizarEstado(solicitud: Solicitud) {
-        if (solicitud.estado == "ACEPTADA") {
-            firestore.collection("solicitudes").document(solicitud.id).update("estado", "TERMINADA")
+        if (solicitud.estado == "APROBADA") {
+            // Obtener la hora actual
+            val horaSalidaActual = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(Date())
+
+            // Actualizar el estado y la hora de salida en Firestore
+            firestore.collection("solicitudes").document(solicitud.id)
+                .update(
+                    mapOf(
+                        "estado" to "TERMINADA",
+                        "horaSalida" to horaSalidaActual
+                    )
+                )
                 .addOnSuccessListener {
                     Toast.makeText(requireContext(), "Has salido del aula", Toast.LENGTH_SHORT).show()
-                    cargarSolicitudesDocente()
+                    cargarSolicitudesDocente() // Recargar la lista de solicitudes
                 }
                 .addOnFailureListener { exception ->
                     Toast.makeText(requireContext(), "Error al salir del aula", Toast.LENGTH_SHORT).show()
-                    Log.e("Firestore", "Error al actualizar estado", exception)
+                    Log.e("Firestore", "Error al actualizar estado y hora de salida", exception)
                 }
         } else {
             Toast.makeText(requireContext(), "No se tuvo acceso al aula", Toast.LENGTH_SHORT).show()
         }
     }
+
 
     private fun cargarSolicitudesDocente() {
         val usuarioActual = auth.currentUser
