@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- Estado cuando el Spinner está seleccionado o enfocado -->
+    <item android:state_pressed="true">
+        <shape>
+            <solid android:color="@color/white" />
+            <corners android:radius="12dp" />
+            <stroke android:width="2dp" android:color="@color/black" />
+        </shape>
+    </item>
+
+    <!-- Estado cuando el Spinner no está seleccionado -->
+    <item>
+        <shape>
+            <solid android:color="@color/white" />
+            <corners android:radius="12dp" />
+            <stroke android:width="2dp" android:color="@color/black" />
+        </shape>
+    </item>
+
+</selector>
