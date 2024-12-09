@@ -40,9 +40,9 @@ Este proyecto es una solución digital diseñada para gestionar el acceso a aula
 ---
 
 DESCARGA NUESTRA APP escaneando el QR:
+![image](https://github.com/user-attachments/assets/8d3e990d-2d70-4a1f-bf04-676e148e26f3)
 
 
-![image](https://github.com/user-attachments/assets/458a2f01-d85c-4488-ac6d-c1d3d129b246)
 
 
 ## 📑 Cómo Empezar
