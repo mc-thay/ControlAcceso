@@ -1,6 +1,6 @@
 # Sistema de Control de Acceso para Docentes y Administradores
 
-Este proyecto es una solución digital diseñada para gestionar el acceso a aulas y laboratorios en una institución educativa. Desarrollado utilizando Kotlin en Android Studio, Firebase Authentication y Firestore, permite a los docentes realizar solicitudes para el uso de espacios y a los administradores gestionar dichas solicitudes.
+Este proyecto es una solución digital diseñada para gestionar el acceso a aulas y laboratorios en la UNS. Desarrollado utilizando Kotlin en Android Studio, Firebase Authentication y Firestore, permite a los docentes realizar solicitudes para el uso de espacios y a los administradores gestionar dichas solicitudes.
 
 ---
 
