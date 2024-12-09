@@ -38,7 +38,8 @@ Este proyecto es una solución digital diseñada para gestionar el acceso a aula
 4. **Gestión de Estado**: Los administradores pueden modificar el estado de una solicitud según las necesidades.
 
 ---
-
+DESCARGA NUESTRA APP escaneando el QR:
+https://drive.google.com/file/d/1A7Fa1DaYqMR36nCG0Uf497zYE1LAS6SE/view?usp=sharing
 ## 📑 Cómo Empezar
 1. Clona este repositorio:
    ```bash
